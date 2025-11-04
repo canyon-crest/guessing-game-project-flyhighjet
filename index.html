@@ -4,30 +4,47 @@
     <title>JavaScript Number Guessing Game</title>
     <script src="script.js" defer></script>
   </head>
-  <body>
+  <body onload="startTime()">
+    <h2>Welcome to the Guessing Game</h2>
+
+    <label for="playerName">Enter your name:</label>
+    <input type="text" id="playerName" placeholder="Your name">
+    <button id="setNameBtn">Set Name</button>
+    <p id="greeting"></p>
+
     <p id="date"></p>
+    <p id="clock"></p>
 
     <h3>Level</h3>
-    <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy</label>
-    <input type="radio" name="level" id="m" value="10"><label for="m">Medium</label>
-    <input type="radio" name="level" id="h" value="100"><label for="h">Hard</label>
+    <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy (1-3)</label>
+    <input type="radio" name="level" id="m" value="10"><label for="m">Medium (1-10)</label>
+    <input type="radio" name="level" id="h" value="100"><label for="h">Hard (1-100)</label>
 
-    <button id="playBtn">Play</button>
+    <button id="playBtn" disabled>Play</button>
 
     <h3 id="msg">Select a Level</h3>
-    <input type="text" id="guess">
+    <input type="text" id="guess" disabled>
     <button id="guessBtn" disabled>Guess</button>
-    <button id="giveUp" disabled>Give Up</button>
+    <button id="giveUpBtn" disabled>Give Up</button>
+
+    <p id="tempFeedback"></p>
+    <p id="scoreQuality"></p>
+
+    <h3>Timers</h3>
+    <p id="roundTimer">Round: 0.00s</p>
+    <p id="fastestTime">Fastest: -</p>
+    <p id="totalTime">Total time (all games): 0.00s</p>
+    <p id="avgTime">Average time/game: -</p>
 
     <h3>Stats</h3>
     <p id="wins">Total wins: 0</p>
-    <p id="avgScore">Average Score: </p>
+    <p id="avgScore">Average guesses: </p>
 
     <h3>Leaderboard</h3>
     <ol>
-      <li name="leaderboard">100</li>
-      <li name="leaderboard">100</li>
-      <li name="leaderboard">100</li>
+      <li name="leaderboard"></li>
+      <li name="leaderboard"></li>
+      <li name="leaderboard"></li>
     </ol>
   </body>
 </html>
