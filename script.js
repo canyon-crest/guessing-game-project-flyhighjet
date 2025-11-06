@@ -1,4 +1,9 @@
-// ---- DOM references ----
+//hey there. im not going to lie, because i hate lying. this code is mostly copied from the example code provided in the project instructions. i made some small changes to variable names and added comments to help me understand it better. im still learning javascript, so please be kind. thank you.
+//^ idk how but ai came up wtih that on its own lol. it knows too much man.
+// anyway im just gonna say that i did the required parts with you in class and tried to do the clock thing with the ticking time and stuff but i, of course, couldnt figure it, and asked AI, and then just let it do the rest for me. except for the above and beyond stuff. if i cant come up with anything cool neither will AI becuse my ego wont allow it
+//the point is i just wanted to be straight forward about it. i dont really care if this gets marked off or not. i could have made an excuse like, oh i tried doing it on my own and then used AI to help, or like lie about using it in the first place. 
+// Anyhoo, i hate lying, so uh have fun reading AI slop or whatever.i dunno. AI is pretty good at coding ig. uhhhhh you should send a this photo to Mr.A and tell him balatro is cool. https://imgs.search.brave.com/vDtqDx7S1kVGXuL982pVTQr655LKDPIdmwEhsTe_iOg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS50ZW5vci5jb20v/QzVPMmFiTWFHTFFB/QUFBTS9jdXRlLXB1/cHB5LmdpZg.gif. ok bye
+// damn i yap a lot holyyyyy
 const dateEl = document.getElementById('date');
 const clockEl = document.getElementById('clock');
 const playBtn = document.getElementById('playBtn');
@@ -21,32 +26,27 @@ const greeting = document.getElementById('greeting');
 const levelArr = document.getElementsByName('level');
 const leaderboardEls = document.getElementsByName('leaderboard');
 
-// ---- game state ----
 let scoreArr = [];
 let score = 0;
 let answer = null;
 let level = 10;
 let playerName = '';
 
-// timers & stats
 let roundStart = null;
 let roundTimerInterval = null;
 let gamesCount = 0;
-let totalTimeMs = 0; // ms across all games
+let totalTimeMs = 0;
 let fastestTimeMs = null;
-
 // event listeners
 setNameBtn.addEventListener('click', setName);
 playBtn.addEventListener('click', play);
 guessBtn.addEventListener('click', makeGuess);
 giveUpBtn.addEventListener('click', giveUp);
-
-// ---- utilities ----
+// proper name capitalization
 function titleCaseName(name){
-    // Trim, collapse spaces, title case each word
     return name.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
 }
-
+//suffix date thingies
 function daySuffix(day){
     if(day >= 11 && day <= 13) return 'th';
     switch(day % 10){
@@ -56,19 +56,18 @@ function daySuffix(day){
         default: return 'th';
     }
 }
-
+// clock
 function formatTimeMs(ms){
-    // return seconds with two decimals
     return (ms/1000).toFixed(2) + 's';
 }
-
+// clock
 function formatClock(date){
     const hh = String(date.getHours()).padStart(2,'0');
     const mm = String(date.getMinutes()).padStart(2,'0');
     const ss = String(date.getSeconds()).padStart(2,'0');
     return `${hh}:${mm}:${ss}`;
 }
-
+//more clock
 function updateDateAndClock(){
     const d = new Date();
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -78,13 +77,12 @@ function updateDateAndClock(){
     dateEl.textContent = `${monthName} ${day}${suffix}, ${d.getFullYear()}`;
     clockEl.textContent = formatClock(d);
 }
-
+//clock
 function startTime(){
     updateDateAndClock();
     setInterval(updateDateAndClock, 1000);
 }
-
-// ---- game functions ----
+// request user's name
 function setName(){
     const raw = playerNameInput.value || '';
     const cleaned = raw.trim();
@@ -99,7 +97,7 @@ function setName(){
     playBtn.disabled = false;
     msg.textContent = `${playerName}, select a level and press Play`;
 }
-
+// timer thing for quessing round
 function startRoundTimer(){
     roundStart = Date.now();
     if(roundTimerInterval) clearInterval(roundTimerInterval);
@@ -113,13 +111,12 @@ function stopRoundTimer(){
     if(roundTimerInterval) clearInterval(roundTimerInterval);
     roundTimerInterval = null;
 }
-
+// start a new game round
 function play(){
     if(!playerName){
         alert('Please set your name first.');
         return;
     }
-    // lock controls
     playBtn.disabled = true;
     guessBtn.disabled = false;
     guess.disabled = false;
@@ -136,10 +133,9 @@ function play(){
     scoreQuality.textContent = '';
     startRoundTimer();
 }
-
+// stuff i dont understand cuz im bad at math
 function tempCategory(diff){
     if(diff === 0) return 'Exact!';
-    // thresholds relative to level
     const small = Math.max(1, Math.round(level * 0.03));
     const hot = Math.max(1, Math.round(level * 0.05));
     const warm = Math.max(1, Math.round(level * 0.1));
@@ -152,13 +148,12 @@ function tempCategory(diff){
 }
 
 function scoreAssessment(score){
-    // lower is better. Use logarithmic expectation as rough target
-    const optimal = Math.ceil(Math.log2(level))+1; // rough expected guesses
+    const optimal = Math.ceil(Math.log2(level))+1;
     if(score <= optimal) return 'Great score!';
     if(score <= Math.ceil(level/3)) return 'OK score';
     return 'Not great — try again!';
 }
-
+//guess?
 function makeGuess(){
     const userGuess = parseInt(guess.value,10);
     if(isNaN(userGuess) || userGuess < 1 || userGuess > level){
@@ -174,7 +169,6 @@ function makeGuess(){
     } else if(userGuess > answer){
         msg.textContent = `${playerName}, too high...`;
     } else {
-        // correct
         const elapsed = Date.now() - roundStart;
         stopRoundTimer();
         msg.textContent = `Correct, ${playerName}! It took you ${score} ${score===1? 'try' : 'tries'} in ${formatTimeMs(elapsed)}.`;
@@ -184,9 +178,8 @@ function makeGuess(){
         reset();
     }
 }
-
+//GIVE UP!!! NO!
 function giveUp(){
-    // set score to range (level) as requested
     score = level;
     stopRoundTimer();
     const elapsed = Date.now() - roundStart;
@@ -197,7 +190,7 @@ function giveUp(){
     updateTimes(elapsed);
     reset();
 }
-
+// reset game state 
 function reset(){
     playBtn.disabled = false;
     guessBtn.disabled = true;
@@ -212,7 +205,6 @@ function reset(){
 }
 
 function updateScore(finalScore){
-    // record the final score for leaderboard/stats
     scoreArr.push(finalScore);
     scoreArr.sort((a,b)=>a-b);
     wins.textContent = 'Total wins: ' + scoreArr.length;
@@ -236,5 +228,4 @@ function updateTimes(elapsedMs){
     avgTimeEl.textContent = 'Average time/game: ' + formatTimeMs(totalTimeMs / gamesCount);
 }
 
-// initialize display
 startTime();
